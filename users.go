@@ -17,4 +17,8 @@ func (api *AngelApi) GetUser(userId int64) (res *UserResponse, err error) {
     return
 }
 
-// func (api *AngelApi) GetUserCompanies(userId int64) (res *CompaniesResponse)
+func (api *AngelApi) GetUserStartupRoles(userId int64) (res *StartupRolesReponse, err error) {
+    res = new(StartupRolesReponse)
+    err = api.get(fmt.Sprintf("/users/%d/roles", userId), url.Values{}, res)
+    return
+}

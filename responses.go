@@ -4,6 +4,11 @@ type UserResponse struct {
     User
 }
 
+type StartupRolesReponse struct {
+    Pagination *StartupRolesPagination
+    StartupRoles []StartupRole
+}
+
 type MetaResponse struct {
     Meta
 }
@@ -20,6 +25,6 @@ type Pagination struct {
 	LastPage int64 `json:"last_page"`
 }
 
-type CompanyPagination struct {
+type StartupRolesPagination struct {
     *Pagination
 }
