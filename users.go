@@ -7,6 +7,14 @@ import (
 
 func (api *AngelApi) Me() (res *UserResponse, err error){
     res = new(UserResponse)
-    err = api.get(fmt.Sprintf("/1/me/"), url.Values{}, res)
+    err = api.get(fmt.Sprintf("/me/"), url.Values{}, res)
     return
 }
+
+func (api *AngelApi) GetUser(userId int64) (res *UserResponse, err error) {
+    res = new(UserResponse)
+    err = api.get(fmt.Sprintf("/users/%d", userId), url.Values{}, res)
+    return
+}
+
+// func (api *AngelApi) GetUserCompanies(userId int64) (res *CompaniesResponse)
