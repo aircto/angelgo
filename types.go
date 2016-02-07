@@ -1,4 +1,4 @@
-package angelco
+package angelgo
 
 type User struct {
 	Name          string
