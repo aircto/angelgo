@@ -5,17 +5,24 @@ type UserResponse struct {
 }
 
 type StartupRolesReponse struct {
-    Pagination *StartupRolesPagination
-    StartupRoles []StartupRole
+    StartupRolesPagination
+    StartupRoles []StartupRole `json:"startup_roles"`
 }
 
-type MetaResponse struct {
-    Meta
+
+type ErrorResponse struct {
+    ErrorJson `json:"error"`
+    Success bool
 }
 
-type Meta struct {
+type AccessError struct {
     ErrorType string `json:"error"`
     ErrorDescription string `json:"error_description"`
+}
+
+type ErrorJson struct {
+    Type string
+    Message string
 }
 
 type Pagination struct {
@@ -26,5 +33,5 @@ type Pagination struct {
 }
 
 type StartupRolesPagination struct {
-    *Pagination
+    Pagination
 }

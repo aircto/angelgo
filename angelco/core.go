@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+    // "io/ioutil"
 )
 
 var (
@@ -59,10 +60,9 @@ func urlify(base_url, path string) string {
 	return base_url + path
 }
 
-type MetaError MetaResponse
 
-func (m *MetaError) Error() string {
-	return fmt.Sprintf("Error making api call:  %s %s", m.ErrorType, m.ErrorDescription)
+func (m *ErrorResponse) Error() string {
+	return fmt.Sprintf("Error making api call:  %s %s", m.ErrorJson.Type, m.ErrorJson.Message)
 }
 
 func (api *AngelApi) extendParams(p url.Values) url.Values {
@@ -106,11 +106,11 @@ func (api *AngelApi) do(req *http.Request, r interface{}) error {
 }
 
 func apiError(resp *http.Response) error {
-	m := new(MetaResponse)
+	m := new(ErrorResponse)
 	if err := decodeResponse(resp.Body, m); err != nil {
 		return err
 	}
-	err := MetaError(*m)
+	err := ErrorResponse(*m)
 	return &err
 }
 

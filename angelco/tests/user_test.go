@@ -1,6 +1,7 @@
 package angelco_testing
 
 import (
+    // "fmt"
     "testing"
 )
 
@@ -20,6 +21,14 @@ func TestMeEndpoint(t *testing.T) {
 }
 
 
+func TestGetUserErrorResponse(t *testing.T) {
+    _, err := api.GetUser(int64(0))
+    if err == nil {
+        t.Error("Fail")
+    }
+}
+
+
 func TestGetUserEndpoint(t *testing.T) {
     user, err := api.GetUser(kaviraj_userId)
 
@@ -29,5 +38,12 @@ func TestGetUserEndpoint(t *testing.T) {
 
     if user.Id == 0 {
         t.Error("Error in fetching user detail")
+    }
+}
+
+func TestGetUserStarupRoles(t *testing.T) {
+    _, err := api.GetUserStartupRoles(kaviraj_userId)
+    if err != nil {
+        t.Error(err)
     }
 }
