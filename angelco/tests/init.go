@@ -11,6 +11,8 @@ var ACCESS_TOKEN = os.Getenv("ACCESS_TOKEN")
 
 var api *angelco.AngelApi
 
+var kaviraj_userId int64 = 1904729
+
 func init() {
     api = angelco.New(CLIENT_ID, CLIENT_SECRET)
     api.SetAccessToken(ACCESS_TOKEN)

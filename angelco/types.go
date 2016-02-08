@@ -18,6 +18,7 @@ type User struct {
 	DribbbleUrl   string `json:"dribbble_url"`
 	Criteria      string
 	Image         string
+	Email         string
 	Id            int64
 	FollowerCount int64 `json:"follower_count"`
 	Investor      bool
