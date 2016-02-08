@@ -1,5 +1,9 @@
 package angelco
 
+import (
+	"time"
+)
+
 type User struct {
 	Name          string
 	Bio           string
@@ -46,9 +50,9 @@ type Skill struct {
 
 type StartupRole struct {
 	Confirmed bool
-	CreatedAt string `json:"created_at"`
-	StartedAt string `json:"started_at"`
-	EndedAt   string `json:"ended_at"`
+	CreatedAt time.Time `json:"created_at"`
+	StartedAt string    `json:"started_at"`
+	EndedAt   string    `json:"ended_at"`
 	Role      string
 	Id        int64
 	Startup   Startup `json:"startup"`
@@ -57,16 +61,16 @@ type StartupRole struct {
 
 type Startup struct {
 	Hidden           bool
-	CommunityProfile bool   `json:"community_profile"`
-	AngelListUrl     string `json:"angellist_url"`
-	CompanyUrl       string `json:"company_url"`
-	CreatedAt        string `json:"created_at"`
-	HighConcept      string `json:"high_concept"`
-	LogoUrl          string `json:"logo_url"`
+	CommunityProfile bool      `json:"community_profile"`
+	AngelListUrl     string    `json:"angellist_url"`
+	CompanyUrl       string    `json:"company_url"`
+	CreatedAt        time.Time `json:"created_at"`
+	HighConcept      string    `json:"high_concept"`
+	LogoUrl          string    `json:"logo_url"`
 	Name             string
-	ProductDesc      string `json:"product_desc"`
-	ThumbUrl         string `json:"thumb_url"`
-	UpdatedAt        string `json:"updated_at"`
+	ProductDesc      string    `json:"product_desc"`
+	ThumbUrl         string    `json:"thumb_url"`
+	UpdatedAt        time.Time `json:"updated_at"`
 	Quality          int64
 	Id               int64
 	FollowerCount    int64 `json:"follower_count"`
