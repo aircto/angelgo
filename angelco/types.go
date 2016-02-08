@@ -86,3 +86,9 @@ type Tag struct {
 	FollowerCount int64 `json:"follower_count"`
 	Id            int64
 }
+
+
+type AccessToken struct {
+    Key string `json:"access_token"`
+    Type string `json:"token_type"`
+}

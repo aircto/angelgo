@@ -11,9 +11,9 @@ import (
 
 var (
 	scheme           = "https"
-	version          = "/1/"
-	apiEndpoint      = scheme + "://api.angel.co" + version
-	oauthEndpoint    = scheme + "://angel.co/api" + version
+	version          = "1"
+	apiEndpoint      = scheme + "://api.angel.co" + "/" + version
+	oauthEndpoint    = scheme + "://angel.co/api"
 	accessTokenUrl   = "/oauth/token"
 	authorizationUrl = "/oauth/authorize"
 )
@@ -24,6 +24,7 @@ type AngelApi struct {
 	AccessToken  string
 }
 
+
 func New(clientId string, clientSecret string) *AngelApi {
 	if clientId == "" || clientSecret == "" {
 		panic("ClientId and ClientSecret should be given to create an AngelCo Api")
@@ -33,6 +34,56 @@ func New(clientId string, clientSecret string) *AngelApi {
 		ClientId:     clientId,
 		ClientSecret: clientSecret,
 	}
+}
+
+func (api *AngelApi) AuthUrl() string {
+    u, err := url.Parse(oauthEndpoint + authorizationUrl)
+    if err != nil {
+        panic(err)
+    }
+    v := url.Values{}
+
+    if api.ClientId == "" {
+        panic("Cannot use AuthUrl without setting ClientId")
+    }
+    
+    v.Set("client_id", api.ClientId)
+    v.Set("scope", "email")
+    v.Set("response_type", "code")
+    u.RawQuery = v.Encode()
+    return u.String()
+}
+
+func (api *AngelApi) tokenUrl() string {
+    return oauthEndpoint + accessTokenUrl
+}
+
+func (api *AngelApi) GetAccessToken(code string) (AccessTokenResponse,  error) {
+    token := new(AccessTokenResponse)
+
+    u, err := url.Parse(api.tokenUrl())
+    if err != nil {
+        return *token, err
+    }
+
+    res, err := http.PostForm(u.String(), url.Values{"client_id": {api.ClientId}, "client_secret": {api.ClientSecret}, "code": {code}, "grant_type": {"authorization_code"}})
+    if err != nil {
+        return *token, err
+    }
+
+    if res.StatusCode != 200 {
+        token_err := new(AccessError)
+        err = decodeResponse(res.Body, token_err)
+        if err != nil {
+            panic(err)
+        }
+        return *token, token_err
+    }
+    err = decodeResponse(res.Body, token)
+    if err != nil {
+        panic(err)
+    }
+    return *token, nil
 }
 
 func (api *AngelApi) SetAccessToken(accessToken string) {
@@ -63,6 +114,10 @@ func urlify(base_url, path string) string {
 
 func (m *ErrorResponse) Error() string {
 	return fmt.Sprintf("Error making api call:  %s %s", m.ErrorJson.Type, m.ErrorJson.Message)
+}
+
+func (m *AccessError) Error() string {
+	return fmt.Sprintf("Error making api call:  %s %s", m.ErrorType, m.ErrorDescription)
 }
 
 func (api *AngelApi) extendParams(p url.Values) url.Values {

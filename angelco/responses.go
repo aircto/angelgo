@@ -9,6 +9,9 @@ type StartupRolesReponse struct {
     StartupRoles []StartupRole `json:"startup_roles"`
 }
 
+type AccessTokenResponse struct {
+    AccessToken
+}
 
 type ErrorResponse struct {
     ErrorJson `json:"error"`
