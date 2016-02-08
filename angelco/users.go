@@ -1,4 +1,4 @@
-package angelgo
+package angelco
 
 import (
     "fmt"

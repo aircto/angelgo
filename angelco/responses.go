@@ -1,4 +1,4 @@
-package angelgo
+package angelco
 
 type UserResponse struct {
     User
