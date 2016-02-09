@@ -18,6 +18,16 @@ type StatusUpdatesResponse struct {
     StatusUpdates []StatusUpdate `json:"status_updates"`
 }
 
+type JobResponse struct {
+    *Job
+}
+
+type JobsListResponse struct {
+    *Pagination
+    Jobs []Job
+}
+
+
 type AccessTokenResponse struct {
     *AccessToken
 }

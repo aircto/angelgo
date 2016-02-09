@@ -87,15 +87,33 @@ type Tag struct {
 	Id            int64
 }
 
-
-type AccessToken struct {
-    Key string `json:"access_token"`
-    Type string `json:"token_type"`
+type Job struct {
+	Id           int64
+	SalaryMin    int64     `json:"salary_min"`
+	SalaryMax    int64     `json:"salary_max"`
+	CreatedAt    time.Time `json:"created_at"`
+	UpdatedAt    time.Time `json:"updated_at"`
+	Title        string
+	Description  string
+	EquityCliff  string `json:"equity_cliff"`
+	EquityMin    string `json:"equity_min"`
+	EquityMax    string `json:"equity_max"`
+	EquityVest   string `json:"equity_vest"`
+	JobType      string `json:"job_type"`
+	AngelListUrl string `json:"angellist_url"`
+	CurrencyCode string `json:"currency_code"`
+	RemoteOk     bool   `json:"remote_ok"`
+	Startup      *Startup
+	Tags         []Tag
 }
 
+type AccessToken struct {
+	Key  string `json:"access_token"`
+	Type string `json:"token_type"`
+}
 
 type StatusUpdate struct {
-    Id int64
-    Message string
-    CreatedAt time.Time `json:"created_at"`
+	Id        int64
+	Message   string
+	CreatedAt time.Time `json:"created_at"`
 }

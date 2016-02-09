@@ -27,21 +27,27 @@ type AngelApi struct {
 
 type AngelcoInterface interface {
     AuthUrl() string
-    GetAccessToken(code string) (AccessTokenResponse, error)
+    GetAccessToken(code string) (*AccessTokenResponse, error)
     SetAccessToken(access_token string)
-    Me()
-    User(userId int64)
-    UserStartupRoles(userId int64)
+    Me()(*UserResponse, error)
+    User(userId int64) (*UserResponse, error)
+    UserStartupRoles(userId int64) (*StartupRolesReponse, error)
 
     // Status message apis
-    MyStatusList() (StatusUpdatesResponse, error)
-    UserStatusList(userId int64) (StatusUpdatesResponse, error)
+    MyStatusList() (*StatusUpdatesResponse, error)
+    UserStatusList(userId int64) (*StatusUpdatesResponse, error)
 
     // Will give a list of status messages if you are team member of the startup else it will be emptyn
-    StartupStatusList(startupId int64) (StatusUpdatesResponse, error)
-    PostMyStatus(message string) (StatusUpdateResponse, error)
-    PostStartupStatus(startupId int64) error
+    StartupStatusList(startupId int64) (*StatusUpdatesResponse, error)
+    PostMyStatus(message string) (*StatusUpdateResponse, error)
+    PostStartupStatus(startupId int64, message string) error
     RemoveStatus(statusId int64) error
+
+    // Jobs api
+    JobsList() (*JobsListResponse, error)
+    Job(jobId int64) (*JobResponse, error)
+    JobsOfStartup(startupId int64) ([]Job , error)
+    JobsOfTag(tagId int64) (*JobsListResponse, error)
     
 }
 
@@ -136,6 +142,16 @@ func (api *AngelApi) post(path string, params url.Values, data url.Values, r int
     return api.do(req, r)
 }
 
+func (api *AngelApi) delete(path string, params url.Values, r interface{}) error {
+    params = api.extendParams(params)
+    req, err := buildDeleteRequest(urlify(apiEndpoint, path), params)
+
+    if err != nil {
+        return err
+    }
+    return api.do(req, r)
+}
+
 func urlify(base_url, path string) string {
 	return base_url + path
 }
@@ -172,6 +188,7 @@ func buildGetRequest(urlStr string, params url.Values) (*http.Request, error) {
 		}
 		u.RawQuery = params.Encode()
 	}
+    fmt.Println(u.String())
 	return http.NewRequest("GET", u.String(), nil)
 }
 
@@ -189,6 +206,20 @@ func buildPostRequest(urlStr string, params url.Values, data url.Values) (r *htt
 	}
     
     return http.NewRequest("POST", u.String(), bytes.NewBufferString(data.Encode()))
+}
+
+func buildDeleteRequest(urlStr string, params url.Values) (r *http.Request, err error) {
+    u, err := url.Parse(urlStr)
+    if err != nil {
+        return nil, err
+    }
+    if params != nil {
+		if u.RawQuery != "" {
+			return nil, fmt.Errorf("Please remove any query params from urlString")
+		}
+		u.RawQuery = params.Encode()
+	}
+    return http.NewRequest("DELETE", u.String(), nil)
 }
 
 func (api *AngelApi) do(req *http.Request, r interface{}) error {
