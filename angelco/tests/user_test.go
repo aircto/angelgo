@@ -1,7 +1,9 @@
 package angelco_testing
 
 import (
-    // "fmt"
+    "fmt"
+    "bytes"
+    "net/url"
     "testing"
 )
 
@@ -22,7 +24,7 @@ func TestMeEndpoint(t *testing.T) {
 
 
 func TestGetUserErrorResponse(t *testing.T) {
-    _, err := api.GetUser(int64(0))
+    _, err := api.User(int64(0))
     if err == nil {
         t.Error("Fail")
     }
@@ -30,7 +32,7 @@ func TestGetUserErrorResponse(t *testing.T) {
 
 
 func TestGetUserEndpoint(t *testing.T) {
-    user, err := api.GetUser(kaviraj_userId)
+    user, err := api.User(kaviraj_userId)
 
     if err != nil {
         t.Error(err)
@@ -42,7 +44,7 @@ func TestGetUserEndpoint(t *testing.T) {
 }
 
 func TestGetUserStarupRoles(t *testing.T) {
-    roles, err := api.GetUserStartupRoles(kaviraj_userId)
+    roles, err := api.UserStartupRoles(kaviraj_userId)
     if err != nil {
         t.Error(err)
     }
@@ -53,9 +55,14 @@ func TestGetUserStarupRoles(t *testing.T) {
 }
 
 func TestGetUserStarupRolesError(t *testing.T) {
-    _, err := api.GetUserStartupRoles(int64(0))
+    _, err := api.UserStartupRoles(int64(0))
 
     if err == nil {
         t.Error("Fail")
     }
+}
+
+func TestSome(t *testing.T) {
+    u := url.Values{"key": {"values"}}
+    fmt.Println(bytes.NewBufferString(u.Encode()))
 }

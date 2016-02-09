@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+    "bytes"
     // "io/ioutil"
 )
 
@@ -24,6 +25,25 @@ type AngelApi struct {
 	AccessToken  string
 }
 
+type AngelcoInterface interface {
+    AuthUrl() string
+    GetAccessToken(code string) (AccessTokenResponse, error)
+    SetAccessToken(access_token string)
+    Me()
+    User(userId int64)
+    UserStartupRoles(userId int64)
+
+    // Status message apis
+    MyStatusList() (StatusUpdatesResponse, error)
+    UserStatusList(userId int64) (StatusUpdatesResponse, error)
+
+    // Will give a list of status messages if you are team member of the startup else it will be emptyn
+    StartupStatusList(startupId int64) (StatusUpdatesResponse, error)
+    PostMyStatus(message string) (StatusUpdateResponse, error)
+    PostStartupStatus(startupId int64) error
+    RemoveStatus(statusId int64) error
+    
+}
 
 func New(clientId string, clientSecret string) *AngelApi {
 	if clientId == "" || clientSecret == "" {
@@ -103,8 +123,17 @@ func (api *AngelApi) get(path string, params url.Values, r interface{}) error {
 	if err != nil {
 		return err
 	}
-
 	return api.do(req, r)
+}
+
+func (api *AngelApi) post(path string, params url.Values, data url.Values, r interface{}) error {
+    params = api.extendParams(params)
+    req, err := buildPostRequest(urlify(apiEndpoint, path), params, data)
+
+    if err != nil {
+        return err
+    }
+    return api.do(req, r)
 }
 
 func urlify(base_url, path string) string {
@@ -143,8 +172,23 @@ func buildGetRequest(urlStr string, params url.Values) (*http.Request, error) {
 		}
 		u.RawQuery = params.Encode()
 	}
-
 	return http.NewRequest("GET", u.String(), nil)
+}
+
+func buildPostRequest(urlStr string, params url.Values, data url.Values) (r *http.Request, err error) {
+    u, err := url.Parse(urlStr)
+    if err != nil {
+        return nil, err
+    }
+    
+    if params != nil {
+		if u.RawQuery != "" {
+			return nil, fmt.Errorf("Please remove any query params from urlString")
+		}
+		u.RawQuery = params.Encode()
+	}
+    
+    return http.NewRequest("POST", u.String(), bytes.NewBufferString(data.Encode()))
 }
 
 func (api *AngelApi) do(req *http.Request, r interface{}) error {

@@ -97,5 +97,5 @@ type AccessToken struct {
 type StatusUpdate struct {
     Id int64
     Message string
-    CreateAt time.Time `json:"created_at"`
+    CreatedAt time.Time `json:"created_at"`
 }
