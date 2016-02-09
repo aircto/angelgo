@@ -92,3 +92,10 @@ type AccessToken struct {
     Key string `json:"access_token"`
     Type string `json:"token_type"`
 }
+
+
+type StatusUpdate struct {
+    Id int64
+    Message string
+    CreateAt time.Time `json:"created_at"`
+}

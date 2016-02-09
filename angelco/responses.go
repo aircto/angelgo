@@ -1,16 +1,25 @@
 package angelco
 
 type UserResponse struct {
-    User
+    *User
 }
 
 type StartupRolesReponse struct {
-    StartupRolesPagination
+    *Pagination
     StartupRoles []StartupRole `json:"startup_roles"`
 }
 
+type StatusUpdateResponse struct {
+    *StatusUpdate
+}
+
+type StatusUpdatesResponse struct {
+    *Pagination
+    StatusUpdates []StatusUpdate `json:"status_updates"`
+}
+
 type AccessTokenResponse struct {
-    AccessToken
+    *AccessToken
 }
 
 type ErrorResponse struct {
@@ -35,6 +44,3 @@ type Pagination struct {
 	LastPage int64 `json:"last_page"`
 }
 
-type StartupRolesPagination struct {
-    Pagination
-}
