@@ -50,7 +50,8 @@ type AngelcoInterface interface {
     JobsOfTag(tagId int64) (*JobsListResponse, error)
 
     //Startups api
-    Startup(startupId int64)
+    Startup(startupId int64) (*StartupResponse, error)
+    StartupComments()
     
 }
 

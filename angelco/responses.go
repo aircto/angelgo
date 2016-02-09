@@ -27,6 +27,9 @@ type JobsListResponse struct {
     Jobs []Job
 }
 
+type StartupResponse struct {
+    *Startup
+}
 
 type AccessTokenResponse struct {
     *AccessToken
