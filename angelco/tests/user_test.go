@@ -43,7 +43,7 @@ func TestGetUserEndpoint(t *testing.T) {
     }
 }
 
-func TestGetUserStarupRoles(t *testing.T) {
+func TestGetUserStartupRoles(t *testing.T) {
     roles, err := api.UserStartupRoles(kaviraj_userId)
     if err != nil {
         t.Error(err)
@@ -52,6 +52,7 @@ func TestGetUserStarupRoles(t *testing.T) {
     if id == 0 {
         t.Error("Failed to get users Startup roles")
     }
+    fmt.Println(roles.StartupRoles[0].Startup)
 }
 
 func TestGetUserStarupRolesError(t *testing.T) {

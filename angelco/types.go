@@ -62,6 +62,7 @@ type StartupRole struct {
 type Startup struct {
 	Hidden           bool
 	CommunityProfile bool      `json:"community_profile"`
+	CompanySize      string    `json:"company_size"`
 	AngelListUrl     string    `json:"angellist_url"`
 	CompanyUrl       string    `json:"company_url"`
 	CreatedAt        time.Time `json:"created_at"`
@@ -70,10 +71,21 @@ type Startup struct {
 	Name             string
 	ProductDesc      string    `json:"product_desc"`
 	ThumbUrl         string    `json:"thumb_url"`
+	CrunchbaseUrl    string    `json:"crunchbase_url"`
+	TwitterUrl       string    `json:"twitter_url"`
+	BlogUrl          string    `json:"blog_url"`
+	FacebookUrl      string    `json:"facebook_url"`
+	LinkedinUrl      string    `json:"linkedin_url"`
+	VideoUrl         string    `json:"video_url"`
 	UpdatedAt        time.Time `json:"updated_at"`
 	Quality          int64
 	Id               int64
 	FollowerCount    int64 `json:"follower_count"`
+	Markets          []Tag
+	Locations        []Tag
+	CompanyType      []Tag `json:"company_type"`
+	Status           StatusUpdate
+	Screenshots      []string
 }
 
 type Tag struct {

@@ -41,38 +41,38 @@ func TestStartupStatusMessagesError(t *testing.T) {
     }
 }
 
-func TestPostMyStatus(t *testing.T) {
-    expected := "Guess what?.. Im posting this via Golang"
-    _, err := api.PostMyStatus(expected)
+// func TestPostMyStatus(t *testing.T) {
+//     expected := "Guess what?.. Im posting this via Golang"
+//     _, err := api.PostMyStatus(expected)
 
-    if err != nil {
-        t.Error(err)
-    }
-}
+//     if err != nil {
+//         t.Error(err)
+//     }
+// }
 
-func TestPostStartupStatus(t *testing.T) {
-    expected := "Guess what?.. Im posting this via Golang"
-    res, err := api.PostStartupStatus(launchyardId, expected)
+// func TestPostStartupStatus(t *testing.T) {
+//     expected := "Guess what?.. Im posting this via Golang"
+//     res, err := api.PostStartupStatus(launchyardId, expected)
 
-    if err != nil {
-        panic(err)
-    }
+//     if err != nil {
+//         panic(err)
+//     }
 
-    if err == nil {
-        if res.Message != expected {
-            t.Error("Status updated wrongly")
-        }
-    }
-}
+//     if err == nil {
+//         if res.Message != expected {
+//             t.Error("Status updated wrongly")
+//         }
+//     }
+// }
 
-func TestRemoveStatus(t *testing.T) {
-    res, err := api.PostMyStatus("testing")
-    if err != nil {
-        t.Error(err)
-    }
-    id := res.Id
-    res, err = api.RemoveStatus(id)
-    if err != nil {
-        t.Error(err)
-    }
-}
+// func TestRemoveStatus(t *testing.T) {
+//     res, err := api.PostMyStatus("testing")
+//     if err != nil {
+//         t.Error(err)
+//     }
+//     id := res.Id
+//     res, err = api.RemoveStatus(id)
+//     if err != nil {
+//         t.Error(err)
+//     }
+// }

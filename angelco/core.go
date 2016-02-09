@@ -48,6 +48,9 @@ type AngelcoInterface interface {
     Job(jobId int64) (*JobResponse, error)
     JobsOfStartup(startupId int64) ([]Job , error)
     JobsOfTag(tagId int64) (*JobsListResponse, error)
+
+    //Startups api
+    Startup(startupId int64)
     
 }
 
