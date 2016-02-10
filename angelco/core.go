@@ -192,7 +192,6 @@ func buildGetRequest(urlStr string, params url.Values) (*http.Request, error) {
 		}
 		u.RawQuery = params.Encode()
 	}
-    fmt.Println(u.String())
 	return http.NewRequest("GET", u.String(), nil)
 }
 
