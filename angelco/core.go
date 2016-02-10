@@ -66,7 +66,7 @@ func New(clientId string, clientSecret string) *AngelApi {
 	}
 }
 
-func (api *AngelApi) AuthUrl() string {
+func (api *AngelApi) AuthUrl(scope string) string {
     u, err := url.Parse(oauthEndpoint + authorizationUrl)
     if err != nil {
         panic(err)
@@ -78,7 +78,7 @@ func (api *AngelApi) AuthUrl() string {
     }
     
     v.Set("client_id", api.ClientId)
-    v.Set("scope", "email")
+    v.Set("scope", scope)
     v.Set("response_type", "code")
     u.RawQuery = v.Encode()
     return u.String()
@@ -180,49 +180,31 @@ func (api *AngelApi) extendParams(p url.Values) url.Values {
 	return p
 }
 
-func buildGetRequest(urlStr string, params url.Values) (*http.Request, error) {
-	u, err := url.Parse(urlStr)
-	if err != nil {
-		return nil, err
-	}
+func buildRequest(methodType string, urlStr string, params url.Values, body url.Values) (r *http.Request, err error) {
+    u, err := url.Parse(urlStr)
+    if err != nil {
+        return nil, err
+    }
 
-	if params != nil {
-		if u.RawQuery != "" {
-			return nil, fmt.Errorf("Please remove any query params from urlString")
-		}
-		u.RawQuery = params.Encode()
-	}
-	return http.NewRequest("GET", u.String(), nil)
+    if params != nil {
+        if u.RawQuery != "" {
+            return nil, fmt.Errorf("Please remove any query params from urlString")
+        }
+        u.RawQuery = params.Encode()
+    }
+    return http.NewRequest(methodType, u.String(), bytes.NewBufferString(body.Encode()))
+}
+
+func buildGetRequest(urlStr string, params url.Values) (*http.Request, error) {
+	return buildRequest("GET", urlStr, params, nil)
 }
 
 func buildPostRequest(urlStr string, params url.Values, data url.Values) (r *http.Request, err error) {
-    u, err := url.Parse(urlStr)
-    if err != nil {
-        return nil, err
-    }
-    
-    if params != nil {
-		if u.RawQuery != "" {
-			return nil, fmt.Errorf("Please remove any query params from urlString")
-		}
-		u.RawQuery = params.Encode()
-	}
-    
-    return http.NewRequest("POST", u.String(), bytes.NewBufferString(data.Encode()))
+    return buildRequest("POST", urlStr, params, data)
 }
 
 func buildDeleteRequest(urlStr string, params url.Values) (r *http.Request, err error) {
-    u, err := url.Parse(urlStr)
-    if err != nil {
-        return nil, err
-    }
-    if params != nil {
-		if u.RawQuery != "" {
-			return nil, fmt.Errorf("Please remove any query params from urlString")
-		}
-		u.RawQuery = params.Encode()
-	}
-    return http.NewRequest("DELETE", u.String(), nil)
+    return buildRequest("DELETE", urlStr, params, nil)
 }
 
 func (api *AngelApi) do(req *http.Request, r interface{}) error {
