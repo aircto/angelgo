@@ -6,7 +6,7 @@ import (
 )
 
 func TestGetAuthUrl(t *testing.T) {
-    u := api.AuthUrl()
+    u := api.AuthUrl("email")
     eUrl := "https://angel.co/api/oauth/authorize"
     expected := fmt.Sprintf("%s?client_id=%s&response_type=code&scope=email", eUrl, api.ClientId)
     if u != expected {
