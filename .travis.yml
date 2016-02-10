@@ -1,0 +1,8 @@
+language: go
+
+go:
+  - tip
+
+script:
+  - cd angelco/tests
+  - go test
